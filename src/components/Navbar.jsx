@@ -12,11 +12,11 @@ function Navbar({voltarVisivel}) {
           Sra. Batata
         </Link>
         <nav className="space-x-4 flex">
-          <h3 className='text-black'> | </h3>
+          <h3 className='text-[#843E1B]'> | </h3>
           <Link to="/cardapio" className="gap-2 px-4 items-center">Cardápio</Link>
-          <h3 className='text-black'> | </h3>
+          <h3 className='text-[#843E1B]'> | </h3>
           <Link to="/contato" className="gap-2 px-4 items-center">Contato</Link>
-          <h3 className='text-black'> | </h3>
+          <h3 className='text-[#843E1B]'> | </h3>
           <Link to="/carrinho" className='gap-2 px-4 items-center' title='Carrinho'>
             <ShoppingCart />
           </Link>

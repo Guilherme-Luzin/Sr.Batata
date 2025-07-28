@@ -1,3 +1,3 @@
-# Sr. Batata
+# Sra. Batata
 
-Site para a batataria Sr. Batata
+Site para a batataria Sra. Batata

@@ -50,68 +50,67 @@ const batatas = [
 
 function Cardapio() {
   const [carrinho, setCarrinho] = useState(() => {
-    const armazenado = localStorage.getItem("carrinho");
-    return armazenado ? JSON.parse(armazenado) : [];
+    let carrinhoString = localStorage.getItem('carrinho');
+    return !carrinhoString ? [] : JSON.parse(carrinhoString);
   })
-  const [quantidadeDeItens, setQuantidadeDeItens] = useState(() => {
-    const armazenado = localStorage.getItem("carrinho");
-    let jsonArmazenado = JSON.parse(armazenado);
-
-    if(!jsonArmazenado || jsonArmazenado == [] || jsonArmazenado.length === 0)
-      return 0;
-
-    return jsonArmazenado.length;
-  });
 
   useEffect(() => {
     localStorage.setItem("carrinho", JSON.stringify(carrinho));
   }, [carrinho]);
 
   const adicionarAoCarrinho = (item) => {
-    setCarrinho((prev) => [...prev, item]);
-    setQuantidadeDeItens((prev) => prev + 1);
+    setCarrinho([...carrinho, item]);
+
+    definirQuantidadeDeItem(item.nome);
   };
 
-  const removerItem = (index) => {
-    setCarrinho((prev) => prev.filter((_, i) => i !== index));
-    setQuantidadeDeItens((prev) => prev ? prev - 1 : 0);
+  const removerItem = (item) => {
+    const index = carrinho.findIndex((i) => i.nome === item.nome);
+    const novoCarrinho = [...carrinho];
+    novoCarrinho.splice(index, 1);
+    setCarrinho(novoCarrinho);
   };
+
+  const definirQuantidadeDeItem = (nomeDoItem) => {
+    const quantidade = carrinho.filter((i) => i.nome === nomeDoItem);
+    return quantidade ? quantidade.length : 0;
+  }
 
   return (
-    <section className="bg-[#FFEBCB] h-screen w-screen">
+    <section className="bg-[#FFEBCB] min-h-screen w-screen flex flex-col">
       <div>
         <Navbar voltarVisivel={true}/>
-        <h2 className="text-3xl font-bold mb-8 text-center text-black">Nosso Cardápio</h2>
+        <h2 className="text-3xl font-bold mb-8 text-center text-[#843E1B]">Nosso Cardápio</h2>
         <div className="grid gap-6 md:grid-cols-2">
           {batatas.map((item, index) => (
             <div key={index} className="bg-[#FFD873] rounded-xl shadow p-6">
               <div className='flex space-x-4'>
-                <h3 className="text-xl font-semibold mb-2 flex items-center text-black">{item.icone} {item.nome}</h3>
+                <h3 className="text-xl font-semibold mb-2 flex items-center text-[#843E1B]">{item.icone} {item.nome}</h3>
                 <div className="flex items-center space-x-2">
                   <button
                     onClick={() => removerItem(item)}
-                    className="w-8 h-8 flex justify-center items-center bg-black text-white rounded"
+                    className="w-8 h-8 flex justify-center items-center bg-[#843E1B] text-white rounded"
                   >
                     -
                   </button>
-                  <span className="w-6 text-center text-black font-medium">
-                    {quantidadeDeItens}
+                  <span className="w-6 text-center text-[#843E1B] font-medium">
+                    {definirQuantidadeDeItem(item.nome)}
                   </span>
                   <button
                     onClick={() => adicionarAoCarrinho(item)}
-                    className="w-8 h-8 flex justify-center items-center bg-black text-white rounded"
+                    className="w-8 h-8 flex justify-center items-center bg-[#843E1B] text-white rounded"
                   >
                     +
                   </button>
                 </div>
               </div>
-                <p className="mb-2 text-brown-700 text-black">{item.descricao}</p>
-                <p className="font-bold text-brown-900 text-black">{item.preco}</p>
+                <p className="mb-2 text-brown-700 text-[#843E1B]">{item.descricao}</p>
+                <p className="font-bold text-brown-900 text-[#843E1B]">{item.preco}</p>
             </div>
           ))}
         </div>
-        <Footer />
       </div>
+      <Footer />
     </section>
   );
 }

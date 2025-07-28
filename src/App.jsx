@@ -6,14 +6,14 @@ import Hero from './components/Hero';
 
 function App() {
   return (
-    <div className="bg-[#FFF6ED] text-brown-800 font-sans h-screen w-screen flex flex-col">
+    <div className="bg-[#FFEBCB] text-brown-800 font-sans h-screen w-screen flex flex-col">
       <div className="space-y-4">
         <Navbar voltarVisivel={false}/>
       <div className="flex-grow">
         <Hero />
       </div>
-      <Footer />
       </div>
+      <Footer />
     </div>
   );
 }

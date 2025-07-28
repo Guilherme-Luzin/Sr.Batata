@@ -10,7 +10,7 @@ function BotaoDeVoltar({visible}) {
     return (
         <button
             onClick={() => navigate(-1)}
-            className="left-0 top-0 bottom-0 text-slate-100" >
+            className="left-0 top-0 bottom-0 text-slate-100 bg-[#843E1B]" >
             <ChevronLeftIcon />
         </button>
     );

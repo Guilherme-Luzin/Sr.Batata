@@ -55,7 +55,7 @@ function Carrinho() {
     // Atualiza o total sempre que o carrinho agrupado muda
     useEffect(() => {
         const precoFinal = carrinhoAgrupado.reduce((acumulador, item) => {
-            return acumulador + parseFloat(item.preco);
+            return acumulador + parseFloat(item.precoTotal);
         }, 0);
 
         if (carrinho && carrinho.length > 0)

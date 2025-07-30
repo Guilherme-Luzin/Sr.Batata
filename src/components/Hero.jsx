@@ -11,7 +11,7 @@ function Hero() {
       >
         <h1 className="text-4xl font-bold mb-4 text-[#843E1B]">
           Batatas Recheadas com Muito Amor! 
-          <img src='src\imgs\Sra.BatataNoCarrinho.png' className="w-24 h-auto inline-block ml-2" alt="Sra. Batata"></img>
+          <img src='/src/imgs/Sra.BatataNoCarrinho.png' className="w-24 h-auto inline-block ml-2" alt="Sra. Batata"></img>
           </h1>
         <p className="text-lg mb-6 text-[#843E1B]">500g de puro sabor em cada porção. Divertido e delicioso!</p>
         <Link

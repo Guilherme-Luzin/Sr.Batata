@@ -3,47 +3,58 @@ import Navbar from './Navbar';
 import { useState, useEffect } from 'react';
 import Footer from './Footer';
 
+const formatarPreco = (preco) => {
+    return parseFloat(preco).toFixed(2);
+}
+
 const batatas = [
   {
     nome: 'Batata com Frango',
     descricao: 'Frango desfiado com catupiry e mussarela ou cheddar',
-    preco: 'R$25,00',
+    moeda: "R$",
+    preco: formatarPreco(25.00),
     icone: <Drumstick className="w-5 h-5 inline mr-1" />
   },
   {
     nome: 'Batata com Calabresa',
     descricao: 'Calabresa refogada com cebola, bacon e queijo',
-    preco: 'R$25,00',
+    moeda: "R$",
+    preco: formatarPreco(25.00),
     icone: <FlameKindling className="w-5 h-5 inline mr-1" />
   },
   {
     nome: 'Batata com Camarão',
     descricao: 'Camarão ao alho e óleo com requeijão e queijo',
-    preco: 'R$35,00',
+    moeda: "R$",
+    preco: formatarPreco(35.00),
     icone: <Shrimp className="w-5 h-5 inline mr-1" />
   },
   {
     nome: 'Strogonoff de Frango',
     descricao: 'Strogonoff cremoso com arroz e batata palha',
-    preco: 'R$25,00',
+    moeda: "R$",
+    preco: formatarPreco(25.00),
     icone: <Utensils className="w-5 h-5 inline mr-1" />
   },
   {
     nome: 'Camarão Cremoso',
     descricao: 'Camarão ao molho cremoso com queijo',
-    preco: 'R$35,00',
+    moeda: "R$",
+    preco: formatarPreco(35.00),
     icone: <Shrimp className="w-5 h-5 inline mr-1" />
   },
   {
     nome: 'Carne Moída Cremosa',
     descricao: 'Carne moída com creme e queijo',
-    preco: 'R$25,00',
+    moeda: "R$",
+    preco: formatarPreco(25.00),
     icone: <Beef className="w-5 h-5 inline mr-1" />
   },
   {
     nome: 'Brócolis com Bacon',
     descricao: 'Brócolis cremoso com queijo e bacon',
-    preco: 'R$25,00',
+    moeda: "R$",
+    preco: formatarPreco(25.00),
     icone: <Leaf className="w-5 h-5 inline mr-1" />
   }
 ];
@@ -66,6 +77,10 @@ function Cardapio() {
 
   const removerItem = (item) => {
     const index = carrinho.findIndex((i) => i.nome === item.nome);
+
+    if(index < 0)
+      return;
+
     const novoCarrinho = [...carrinho];
     novoCarrinho.splice(index, 1);
     setCarrinho(novoCarrinho);

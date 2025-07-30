@@ -142,7 +142,7 @@ function Carrinho() {
                     </span>
 
                     <a
-                    href={`https://wa.me/556282285204?text=${encodeURIComponent("Olá! Gostaria de fazer o pedido:\n" + carrinhoAgrupado.map(i => `- ${i.nome} ${i.totalItens}x (R$ ${formatarPreco(i.preco)})`).join("\n") + `\nTotal: R$ ${formatarPreco(total)}` + `\nObservações: ${observacoes}`)}`}
+                    href={`https://wa.me/556282285204?text=${encodeURIComponent("Olá! Gostaria de fazer o pedido:\n" + carrinhoAgrupado.map(i => `- ${i.nome} ${i.totalItens}x (R$ ${formatarPreco(i.precoTotal)})`).join("\n") + `\nTotal: R$ ${formatarPreco(total)}` + `\nObservações: ${observacoes}`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block text-center bg-green-500 text-white py-2 rounded hover:bg-green-600 transition"

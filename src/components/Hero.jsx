@@ -10,10 +10,10 @@ function Hero() {
         transition={{ duration: 0.8 }}
       >
         <h1 className="text-4xl font-bold mb-4 text-[#843E1B]">
-          Batatas Recheadas com Muito Amor! 
+          Batatas gourmet recheadas 
           <img src='/imgs/Sra.BatataNoCarrinho.png' className="w-24 h-auto inline-block ml-2" alt="Sra. Batata"></img>
           </h1>
-        <p className="text-lg mb-6 text-[#843E1B]">500g de puro sabor em cada porção. Divertido e delicioso!</p>
+        <p className="text-lg mb-6 text-[#843E1B]">Sabor irresistível em cada porção. Acesse o cardápio e peça já a sua!</p>
         <Link
           to="/cardapio"
           className="inline-block bg-[#FFD873] text-brown-900 font-semibold px-6 py-3 rounded-xl shadow-md hover:bg-yellow-400 transition text-[#843E1B]"

@@ -19,10 +19,6 @@ function Cardapio() {
     let carrinhoString = localStorage.getItem('carrinho');
     return !carrinhoString ? [] : JSON.parse(carrinhoString);
   })
-  const [categoriasLocais, setCategoriasLocais] = useState(() => {
-    let categoriasLocaisString = localStorage.getItem('categoriasLocais');
-    return !categoriasLocaisString ? [] : JSON.parse(categoriasLocaisString);
-  })
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,10 +40,6 @@ function Cardapio() {
   }, [tabAtiva]);
 
   useEffect(() => {
-    if(categoriasLocais.length > 0) {
-      setCategorias(categoriasLocais);
-      return;
-    }
     const fetchData = async () => {
       setLoadingCategorias(true);
       try {
@@ -65,10 +57,6 @@ function Cardapio() {
     };
     fetchData();
   }, []);
-
-  useEffect(() => {
-    localStorage.setItem("categoriasLocais", JSON.stringify(categoriasLocais));
-  }, [categoriasLocais]);
 
   useEffect(() => {
     localStorage.setItem("carrinho", JSON.stringify(carrinho));

@@ -6,8 +6,11 @@ import App from './App.jsx'
 import Cardapio from './components/Cardapio.jsx'
 import Contato from './components/Contato.jsx'
 import Carrinho from './components/Carrinho.jsx'
-import Login from './components/Login.jsx'
+import Login from './adminComponents/Login.jsx'
 import { AuthProvider } from './context/AuthContext'
+import CadastroPrato from './adminComponents/CadastroPrato.jsx'
+import CadastroCategoria from './adminComponents/CadastroCategoria.jsx'
+import AppAdmin from './adminComponents/AppAdmin.jsx'
 
 const router = createBrowserRouter([
   {
@@ -30,6 +33,18 @@ const router = createBrowserRouter([
     path: "/login",
     element: <Login />,
   },
+  {
+    path: "/cadastro-prato",
+    element: <CadastroPrato />,
+  },
+  {
+    path: "/cadastro-categoria",
+    element: <CadastroCategoria />,
+  },
+  {
+    path: "/app-admin",
+    element: <AppAdmin />,
+  }
 ]);
 
 createRoot(document.getElementById('root')).render(

@@ -44,6 +44,7 @@ function Carrinho() {
                 id: `${nome} - ${itens[0].categoria}`,
                 nome: itens[0].nome,
                 categoria: itens[0].categoria,
+                peso: itens[0].peso,
                 descricao: itens[0].descricao,
                 moeda: itens[0].moeda,
                 preco: itens[0].preco,
@@ -126,7 +127,7 @@ function Carrinho() {
                             {item.moeda} {formatarPreco(item.precoTotal)}
                         </span>
                         </div>
-                        <span className="text-[#843E1B]">{item.categoria}</span>
+                        <span className="text-[#843E1B]">{item.peso}</span>
                     </div>
                     ))}
 
@@ -146,7 +147,7 @@ function Carrinho() {
                     </span>
 
                     <a
-                    href={`https://wa.me/556282285204?text=${encodeURIComponent("Olá! Gostaria de fazer o pedido:\n" + carrinhoAgrupado.map(i => `- ${i.nome} - ${i.categoria} ${i.totalItens}x (R$ ${formatarPreco(i.precoTotal)})`).join("\n") + `\nTotal: R$ ${formatarPreco(total)}` + `\nObservações: ${observacoes}`)}`}
+                    href={`https://wa.me/556282285204?text=${encodeURIComponent("Olá! Gostaria de fazer o pedido:\n" + carrinhoAgrupado.map(i => `- ${i.nome} - ${i.peso} ${i.totalItens}x (R$ ${formatarPreco(i.precoTotal)})`).join("\n") + `\nTotal: R$ ${formatarPreco(total)}` + `\nObservações: ${observacoes}`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="block text-center bg-green-500 text-white py-2 rounded hover:bg-green-600 transition"

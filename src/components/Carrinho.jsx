@@ -2,6 +2,7 @@ import Footer from './Footer';
 import Navbar from './Navbar';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import formatarPreco from '../utils/formatarPreco';
 
 function Carrinho() {
     const [carrinho, setCarrinho] = useState(() => {
@@ -12,10 +13,6 @@ function Carrinho() {
     const [total, setTotal] = useState("");
     const [moeda, setMoeda] = useState("R$");
     const [carrinhoAgrupado, setCarrinhoAgrupado] = useState([]);
-
-    const formatarPreco = (preco) => {
-        return parseFloat(preco || 0).toFixed(2);
-    }
 
       // Atualiza o carrinho agrupado sempre que o carrinho muda
     useEffect(() => {

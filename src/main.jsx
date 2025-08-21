@@ -11,6 +11,8 @@ import { AuthProvider } from './context/AuthContext'
 import CadastroPrato from './adminComponents/CadastroPrato.jsx'
 import CadastroCategoria from './adminComponents/CadastroCategoria.jsx'
 import AppAdmin from './adminComponents/AppAdmin.jsx'
+import Pratos from './adminComponents/Pratos.jsx'
+import Categorias from './adminComponents/Categorias.jsx'
 
 const router = createBrowserRouter([
   {
@@ -34,6 +36,18 @@ const router = createBrowserRouter([
     element: <Login />,
   },
   {
+    path: "/app-admin",
+    element: <AppAdmin />,
+  },
+  {
+    path: "/pratos",
+    element: <Pratos />,
+  },
+  {
+    path: "/categorias",
+    element: <Categorias />,
+  },
+  {
     path: "/cadastro-prato",
     element: <CadastroPrato />,
   },
@@ -41,10 +55,6 @@ const router = createBrowserRouter([
     path: "/cadastro-categoria",
     element: <CadastroCategoria />,
   },
-  {
-    path: "/app-admin",
-    element: <AppAdmin />,
-  }
 ]);
 
 createRoot(document.getElementById('root')).render(

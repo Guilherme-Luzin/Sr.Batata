@@ -75,24 +75,26 @@ function Pratos() {
                     </button>
                 </div>
             </div>
-            <ul className="space-y-4 p-6 bg-[#FFEBCB] rounded-md shadow">
-            {pratos.map((prato) => (
-                <li key={prato.id} className="flex gap-2">
-                <button
-                    onClick={() => aoClicarNoPrato(prato.id)}
-                    className="bg-[#FFD873] text-[#843E1B] p-2 w-100 rounded-md flex items-center gap-2 text-left"
-                >
-                    {prato.nome} - {prato.categoria}
-                </button>
-                <button 
-                    className="bg-[#FFD873] text-[#843E1B] p-2 rounded-md flex items-center gap-2 text-left"
-                    onClick={() => abrirModalDeletar(prato.id)}
-                >
-                    <TrashIcon />
-                </button>
-                </li>
-            ))}
-            </ul>
+            <div className="flex justify-center">
+                <ul className="space-y-4 p-6 bg-[#FFEBCB] rounded-md shadow-2xl w-full md:w-[600px]">
+                {pratos.map((prato) => (
+                    <li key={prato.id} className="flex gap-2">
+                    <button
+                        onClick={() => aoClicarNoPrato(prato.id)}
+                        className="bg-[#FFD873] text-[#843E1B] p-2 w-100 rounded-md flex items-center gap-2 text-left"
+                    >
+                        {prato.nome} - {prato.categoria}
+                    </button>
+                    <button 
+                        className="bg-[#FFD873] text-[#843E1B] p-2 rounded-md flex items-center gap-2 text-left"
+                        onClick={() => abrirModalDeletar(prato.id)}
+                    >
+                        <TrashIcon />
+                    </button>
+                    </li>
+                ))}
+                </ul>
+            </div>
 
             {modalAberto && (
                 <DialogoDeletar

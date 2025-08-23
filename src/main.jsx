@@ -13,6 +13,7 @@ import CadastroCategoria from './adminComponents/CadastroCategoria.jsx'
 import AppAdmin from './adminComponents/AppAdmin.jsx'
 import Pratos from './adminComponents/Pratos.jsx'
 import Categorias from './adminComponents/Categorias.jsx'
+import ProtectedRoute from './adminComponents/ProtectedRoute.jsx'
 
 const router = createBrowserRouter([
   {
@@ -37,23 +38,23 @@ const router = createBrowserRouter([
   },
   {
     path: "/app-admin",
-    element: <AppAdmin />,
+    element: <ProtectedRoute> <AppAdmin /> </ProtectedRoute>,
   },
   {
     path: "/pratos",
-    element: <Pratos />,
+    element: <ProtectedRoute> <Pratos /> </ProtectedRoute>,
   },
   {
     path: "/categorias",
-    element: <Categorias />,
+    element: <ProtectedRoute> <Categorias /> </ProtectedRoute>,
   },
   {
     path: "/cadastro-prato",
-    element: <CadastroPrato />,
+    element: <ProtectedRoute> <CadastroPrato /> </ProtectedRoute>,
   },
   {
     path: "/cadastro-categoria",
-    element: <CadastroCategoria />,
+    element: <ProtectedRoute> <CadastroCategoria /> </ProtectedRoute>,
   },
 ]);
 

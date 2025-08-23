@@ -20,7 +20,10 @@ export default function CadastroPrato() {
 
   useEffect(() => {
     if(!pratoId || pratoId === 0 || pratoId === "undefined")
+    {
+      setLoading(false);
       return;
+    }
 
     const fetchPratos = async () => {
       setLoading(true);

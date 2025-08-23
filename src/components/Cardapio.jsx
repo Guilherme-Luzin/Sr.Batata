@@ -1,38 +1,62 @@
 import Navbar from './Navbar';
 import { useState, useEffect } from 'react';
 import Footer from './Footer';
-import batatas250g from '../ItensDoCardapio/batatas250g';
-import batatas500g from '../ItensDoCardapio/batatas500g';
-import sobremesas from '../ItensDoCardapio/sobremesas';
 import { ShoppingCart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { db } from '../context/FirebaseConfig';
+import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
+import formatarPreco from '../utils/formatarPreco';
 
 function Cardapio() {
   const navigate = useNavigate(); 
   const [tabAtiva, setTabAtiva] = useState('500g');
-  const [cardapio, setCardapio] = useState(batatas500g);
-
-  useEffect(() => {
-    switch (tabAtiva) {
-      case '500g':
-        setCardapio(batatas500g);
-        break;
-      case '250g':
-        setCardapio(batatas250g);
-        break;
-      case 'Sobremesas':
-        setCardapio(sobremesas);
-        break;
-      default:
-        setCardapio(batatas500g);
-        break;
-    }
-  }, [tabAtiva]);
+  const [cardapio, setCardapio] = useState();
+  const [loadingCategorias, setLoadingCategorias] = useState(true);
+  const [loadingCardapio, setLoadingCardapio] = useState(true);
+  const [categorias, setCategorias] = useState();
 
   const [carrinho, setCarrinho] = useState(() => {
     let carrinhoString = localStorage.getItem('carrinho');
     return !carrinhoString ? [] : JSON.parse(carrinhoString);
   })
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoadingCardapio(true);
+      try {
+        const q = query(
+          collection(db, "cardapio"),
+          where("categoria", "==", tabAtiva)
+        );
+        const querySnapshot = await getDocs(q);
+        const itens = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setCardapio(itens);
+      } catch (error) {
+        alert("Erro ao buscar itens do cardápio:", error);
+      }
+      setLoadingCardapio(false);
+    };
+    fetchData();
+  }, [tabAtiva]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoadingCategorias(true);
+      try {
+        const q = query(
+          collection(db, "categorias"),
+          orderBy("nome", "asc")
+        );
+        const querySnapshot = await getDocs(q);
+        const itens = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setCategorias(itens);
+      } catch (error) {
+        alert("Erro ao buscar categorias:", error);
+      }
+      setLoadingCategorias(false);
+    };
+    fetchData();
+  }, []);
 
   useEffect(() => {
     localStorage.setItem("carrinho", JSON.stringify(carrinho));
@@ -67,50 +91,56 @@ function Cardapio() {
         <Navbar voltarVisivel={true}/>
         <h2 className="text-3xl font-bold mb-8 text-center text-[#843E1B]">Nosso Cardápio</h2>
 
-        <div className="flex justify-center gap-4 mb-6">
-          {['500g', '250g', 'Sobremesas'].map((tab) => (
-            <button
-              key={tab}
-              className={`px-4 py-2 rounded-full font-semibold ${
-                tabAtiva === tab
-                  ? 'bg-yellow-400 text-white'
-                  : 'bg-gray-200 text-gray-800'
-              }`}
-              onClick={() => setTabAtiva(tab)}
-            >
-              {tab}
-            </button>
-          ))}
-        </div>
+        {loadingCategorias 
+        ? (<p className="text-center text-[#843E1B]">Carregando categorias...</p>)
+        : <div className="flex justify-center gap-4 mb-6">
+            {categorias?.map((tab) => (
+              <button
+                key={tab.nome}
+                className={`px-4 py-2 rounded-full font-semibold ${
+                  tabAtiva === tab.nome
+                    ? 'bg-yellow-400 text-white'
+                    : 'bg-gray-200 text-gray-800'
+                }`}
+                onClick={() => setTabAtiva(tab.nome)}
+              >
+                {tab.nome}
+              </button>
+            ))}
+          </div>
+        }
 
-        <div className="grid gap-6 md:grid-cols-2">
-          {cardapio.map((item, index) => (
-            <div key={index} className="bg-[#FFD873] rounded-xl shadow p-6">
-              <div className='flex space-x-4'>
-                <h3 className="text-xl font-semibold mb-2 flex items-center text-[#843E1B]">{item.icone} {item.nome}</h3>
-                <div className="flex items-center space-x-2">
-                  <button
-                    onClick={() => removerItem(item)}
-                    className="w-8 h-8 flex justify-center items-center bg-[#843E1B] text-white rounded"
-                  >
-                    -
-                  </button>
-                  <span className="w-6 text-center text-[#843E1B] font-medium">
-                    {definirQuantidadeDeItem(item)}
-                  </span>
-                  <button
-                    onClick={() => adicionarAoCarrinho(item)}
-                    className="w-8 h-8 flex justify-center items-center bg-[#843E1B] text-white rounded"
-                  >
-                    +
-                  </button>
+        {loadingCardapio 
+        ? (<p className="text-center text-[#843E1B]">Carregando itens...</p>)
+        : <div className="grid gap-6 md:grid-cols-2">
+            {cardapio?.map((item, index) => (
+              <div key={index} className="bg-[#FFD873] rounded-xl shadow p-6">
+                <div className='flex space-x-4'>
+                  <h3 className="text-xl font-semibold mb-2 flex items-center text-[#843E1B]">{item.icone} {item.nome}</h3>
+                  <div className="flex items-center space-x-2">
+                    <button
+                      onClick={() => removerItem(item)}
+                      className="w-8 h-8 flex justify-center items-center bg-[#843E1B] text-white rounded"
+                    >
+                      -
+                    </button>
+                    <span className="w-6 text-center text-[#843E1B] font-medium">
+                      {definirQuantidadeDeItem(item)}
+                    </span>
+                    <button
+                      onClick={() => adicionarAoCarrinho(item)}
+                      className="w-8 h-8 flex justify-center items-center bg-[#843E1B] text-white rounded"
+                    >
+                      +
+                    </button>
+                  </div>
                 </div>
+                  <p className="mb-2 text-brown-700 text-[#843E1B]">{item.descricao}</p>
+                  <p className="font-bold text-brown-900 text-[#843E1B]">{formatarPreco(item.preco)}</p>
               </div>
-                <p className="mb-2 text-brown-700 text-[#843E1B]">{item.descricao}</p>
-                <p className="font-bold text-brown-900 text-[#843E1B]">{item.preco}</p>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        }
         <div className="grid gap-6 md:grid-cols-2">
         </div>
         {carrinho.length > 0 && (

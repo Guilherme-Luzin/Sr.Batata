@@ -36,7 +36,7 @@ const batatas500g = [
   },
   {
       nome: 'Camarão Cremoso',
-      descricao: 'Batata gourmet com um delicioso  camarão cremoso, finalizada muSSarela ou cheddar, acompanha 100 gramas de arroz e batata pa',
+      descricao: 'Batata gourmet com um delicioso  camarão cremoso, finalizada muSSarela ou cheddar, acompanha 100 gramas de arroz e batata palha',
       moeda: "R$",
       preco: formatarPreco(30.00),
       icone: <Shrimp className="w-5 h-5 inline mr-1" />,

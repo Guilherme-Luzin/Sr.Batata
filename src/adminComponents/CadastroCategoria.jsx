@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
-import { db } from "../context/FirebaseConfig";
-import { collection, addDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import Input from "./Input";
 import Navbar from "./Navbar";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import { CategoriasRepository } from '../repositories/CategoriasRepository';
 
 export default function CadastroCategoria() {
   const [nome, setNome] = useState("");
@@ -23,14 +22,9 @@ export default function CadastroCategoria() {
     const fetchCategorias = async () => {
       setLoading(true);
       try {
-        const categoriaDoc = doc(db, "categorias", categoriaId);
-        const categoriaSnapshot = await getDoc(categoriaDoc);
+        let categoria = await CategoriasRepository.getCategoriaById(categoriaId);
 
-        if (categoriaSnapshot.exists()) 
-        {
-          const categoriaData = categoriaSnapshot.data();
-          setNome(categoriaData.nome || "");
-        }
+        setNome(categoria.nome || "");
 
       } catch (error) {
         console.error("Erro ao buscar categoria com id:", categoriaId, error);
@@ -44,23 +38,26 @@ export default function CadastroCategoria() {
     if (!categoriaId)
       return;
 
-    const pratoRef = doc(db, "categorias", categoriaId);
-    await updateDoc(pratoRef, {
-      nome
-    });
-    setMensagem("Categoria atualizada com sucesso!");
+    try {
+      await CategoriasRepository.update(categoriaId, nome);
+
+      setMensagem("Categoria atualizada com sucesso!");
+    } catch (error) {
+      alert("Erro ao atualizar categoria:", error);
+    }    
   }
 
   const CadastrarCategoria = async () => {
     if (categoriaId)
       return;
 
-    await addDoc(
-      collection(db, "categorias"), {
-            nome
-        }
-      );
-    setMensagem("Categoria cadastrado com sucesso!");
+    try {
+      await CategoriasRepository.create(nome);
+
+      setMensagem("Categoria cadastrado com sucesso!");
+    } catch (error) {
+      alert("Erro ao cadastrar categoria:", error);
+    }
   }
 
   const aoClicarEmCadastrar = async (e) => {

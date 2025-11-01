@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { db } from "../context/FirebaseConfig";
-import { collection, addDoc, getDocs, query, orderBy, doc, getDoc, updateDoc } from "firebase/firestore";
 import Input from "./Input";
 import Navbar from "./Navbar";
 import { useSearchParams, useNavigate } from "react-router-dom";
+import { ItensRepository } from '../repositories/ItensRepository';
+import { CategoriasRepository } from '../repositories/CategoriasRepository';
 
-export default function CadastroPrato() {
+export default function CadastroItens() {
   const [nome, setNome] = useState("");
   const [descricao, setDescricao] = useState("");
   const [preco, setPreco] = useState("");
@@ -15,87 +15,96 @@ export default function CadastroPrato() {
   const [loading, setLoading] = useState(true);
   const [mensagem, setMensagem] = useState("");
   const [searchParams] = useSearchParams();
-  const pratoId = searchParams.get("id");
+  const itemId = searchParams.get("id");
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(!pratoId || pratoId === 0 || pratoId === "undefined")
+    if(!itemId || itemId === 0 || itemId === "undefined")
     {
       setLoading(false);
       return;
     }
 
-    const fetchPratos = async () => {
+    const fetchItens = async () => {
       setLoading(true);
-      try {
-        const pratoDoc = doc(db, "cardapio", pratoId);
-        const pratoSnapshot = await getDoc(pratoDoc);
+      try{
+        let item = await ItensRepository.getItemById(itemId);
 
-        if (pratoSnapshot.exists()) 
-        {
-          const pratoData = pratoSnapshot.data();
-          setNome(pratoData.nome || "");
-          setDescricao(pratoData.descricao || "");
-          setPreco(pratoData.preco || "");
-          setCategoria(pratoData.categoria || "");
-          setPeso(pratoData.peso || "");
-        }
-
+        setNome(item.nome || "");
+        setDescricao(item.descricao || "");
+        setPreco(item.preco || "");
+        setCategoria(item.categoria || "");
+        setPeso(item.peso || "");
+        
       } catch (error) {
-        console.error("Erro ao buscar prato com id:", pratoId, error);
+        console.error("Erro ao buscar item com id:", itemId, error);
       }
       setLoading(false);
     };
-    fetchPratos();
-  }, [pratoId]);
+    fetchItens();
+  }, [itemId]);
 
   useEffect(() => {
     const fetchCategorias = async () => {
       setLoading(true);
-      try {
-        const q = query(collection(db, "categorias"), orderBy("nome", "asc"));
-        const querySnapshot = await getDocs(q);
-        const itens = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        setCategorias(itens);
-        if(itens.length > 0 && !pratoId) 
-          setCategoria(itens[0].nome);
+      try {     
+        const categorias = await CategoriasRepository.getCategorias();
+
+        setCategorias(categorias);
+
+        if(categorias.length > 0 && !itemId) 
+          setCategoria(categorias[0].nome);
+
       } catch (error) {
-        console.error("Erro ao buscar categorias:", error);
+        alert("Erro ao buscar categorias:", error);
       }
       setLoading(false);
     };
     fetchCategorias();
   }, []);
 
-  const AtualizarPrato = async () => {
-    if (!pratoId)
+  const AtualizarItem = async () => {
+    if (!itemId)
       return;
 
-    const pratoRef = doc(db, "cardapio", pratoId);
-    await updateDoc(pratoRef, {
-      nome,
-      descricao,
-      preco: parseFloat(preco),
-      categoria,
-      peso
-    });
-    setMensagem("Prato atualizado com sucesso!");
+    try {
+      let item = {
+        id: itemId,
+        nome,
+        descricao,
+        preco: parseFloat(preco),
+        categoria,
+        peso
+      }
+
+      await ItensRepository.update(item);
+    
+      setMensagem("Item atualizado com sucesso!");
+    } catch (error) {
+      alert("Erro ao atualizar item:", error);
+    }
   }
 
-  const CadastrarPrato = async () => {
-    if (pratoId)
+  const CadastrarItem = async () => {
+    if (itemId)
       return;
 
-    await addDoc(
-      collection(db, "cardapio"), {
-            nome,
-            descricao,
-            preco: parseFloat(preco),
-            categoria,
-            peso
-        }
-      );
-    setMensagem("Prato cadastrado com sucesso!");
+    try {
+      let item = {
+        id: itemId,
+        nome,
+        descricao,
+        preco: parseFloat(preco),
+        categoria,
+        peso
+      }
+
+      await ItensRepository.create(item);
+
+      setMensagem("Item cadastrado com sucesso!");
+    } catch (error) {
+      alert("Erro ao cadastrar item:", error);
+    }
   }
 
   const aoClicarEmCadastrar = async (e) => {
@@ -107,13 +116,12 @@ export default function CadastroPrato() {
 
     try {
 
-      AtualizarPrato();
-      CadastrarPrato();
+      AtualizarItem();
+      CadastrarItem();
       
-      navigate("/pratos");
+      navigate("/itens-admin");
     } catch (error) {
-      console.error("Erro ao cadastrar prato:", error);
-      setMensagem("Erro ao cadastrar prato!", error);
+      setMensagem("Erro ao cadastrar item!", error);
     }
   };
 
@@ -124,12 +132,12 @@ export default function CadastroPrato() {
     <section className="bg-[#FFEBCB] min-h-screen w-screen flex flex-col">
         <Navbar voltarVisivel={true} />
         <div className="flex flex-col items-center p-8 justify-center min-h-screen w-screen">
-        <h2 className="text-2xl font-bold mb-4 text-[#843E1B]">Cadastro de Prato</h2>
+        <h2 className="text-2xl font-bold mb-4 text-[#843E1B]">Cadastro de Item</h2>
         {mensagem && <p className="mb-4 text-green-600">{mensagem}</p>}
         <form onSubmit={aoClicarEmCadastrar} className="flex flex-col gap-3">
             <Input 
                 type="text"
-                placeholder="Nome do prato"
+                placeholder="Nome do item"
                 value={nome}
                 onChange={(e) => setNome(e.target.value)}
             />

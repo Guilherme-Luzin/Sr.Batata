@@ -15,7 +15,7 @@ function Navbar({voltarVisivel}) {
             onClick={() => navigate('/app-admin')} />
         <nav className="space-x-4 flex">
           <h3 className='text-[#843E1B]'> | </h3>
-          <Link to="/pratos" className="gap-2 items-center">Pratos</Link>
+          <Link to="/itens-admin" className="gap-2 items-center">Itens</Link>
           <h3 className='text-[#843E1B]'> | </h3>
           <Link to="/categorias" className="gap-2 items-center">Categorias</Link>
           <h3 className='text-[#843E1B]'> | </h3>

@@ -3,15 +3,15 @@ import { createRoot } from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './index.css'
 import App from './App.jsx'
-import Cardapio from './components/Cardapio.jsx'
+import Itens from './components/Itens.jsx'
 import Contato from './components/Contato.jsx'
 import Carrinho from './components/Carrinho.jsx'
 import Login from './adminComponents/Login.jsx'
 import { AuthProvider } from './context/AuthContext'
-import CadastroPrato from './adminComponents/CadastroPrato.jsx'
+import CadastroItens from './adminComponents/CadastroItens.jsx'
 import CadastroCategoria from './adminComponents/CadastroCategoria.jsx'
 import AppAdmin from './adminComponents/AppAdmin.jsx'
-import Pratos from './adminComponents/Pratos.jsx'
+import ItensAdmin from './adminComponents/ItensAdmin.jsx'
 import Categorias from './adminComponents/Categorias.jsx'
 import ProtectedRoute from './adminComponents/ProtectedRoute.jsx'
 
@@ -21,8 +21,8 @@ const router = createBrowserRouter([
     element: <App />,
   },
   {
-    path: "/cardapio",
-    element: <Cardapio />,
+    path: "/itens",
+    element: <Itens />,
   },
   {
     path: "/contato",
@@ -41,16 +41,16 @@ const router = createBrowserRouter([
     element: <ProtectedRoute> <AppAdmin /> </ProtectedRoute>,
   },
   {
-    path: "/pratos",
-    element: <ProtectedRoute> <Pratos /> </ProtectedRoute>,
+    path: "/itens-admin",
+    element: <ProtectedRoute> <ItensAdmin /> </ProtectedRoute>,
   },
   {
     path: "/categorias",
     element: <ProtectedRoute> <Categorias /> </ProtectedRoute>,
   },
   {
-    path: "/cadastro-prato",
-    element: <ProtectedRoute> <CadastroPrato /> </ProtectedRoute>,
+    path: "/cadastro-itens",
+    element: <ProtectedRoute> <CadastroItens /> </ProtectedRoute>,
   },
   {
     path: "/cadastro-categoria",

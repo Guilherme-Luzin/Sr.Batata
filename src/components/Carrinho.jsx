@@ -14,7 +14,7 @@ function Carrinho() {
     const [moeda, setMoeda] = useState("R$");
     const [carrinhoAgrupado, setCarrinhoAgrupado] = useState([]);
 
-      // Atualiza o carrinho agrupado sempre que o carrinho muda
+    // Atualiza o carrinho agrupado sempre que o carrinho muda
     useEffect(() => {
         localStorage.setItem("carrinho", JSON.stringify(carrinho));
 
@@ -162,7 +162,7 @@ function Carrinho() {
                     </button>
                 </div>
                 )}
-                <Link to="/cardapio" className="text-center text-[#843E1B]">Voltar ao cardápio</Link>
+                <Link to="/itens" className="text-center text-[#843E1B]">Voltar ao cardápio</Link>
             </div>
             <Footer />
         </section>

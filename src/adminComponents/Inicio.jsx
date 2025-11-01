@@ -13,12 +13,12 @@ function Inicio() {
           Batatas gourmet recheadas 
           <img src='/imgs/Sra.BatataNoCarrinho.png' className="w-24 h-auto inline-block ml-2" alt="Sra. Batata"></img>
           </h1>
-        <p className="text-lg mb-6 text-[#843E1B]">Bem-vindo, aqui você poderá ver e cadastrar novos pratos e categorias!</p>
+        <p className="text-lg mb-6 text-[#843E1B]">Bem-vindo, aqui você poderá ver e cadastrar novos itens e categorias!</p>
         <Link
-          to="/pratos"
+          to="/itens-admin"
           className="inline-block mr-2 bg-[#FFD873] text-brown-900 font-semibold px-6 py-3 rounded-xl shadow-md hover:bg-yellow-400 transition text-[#843E1B]"
         >
-          Pratos
+          Itens
         </Link>
         <Link
           to="/categorias"

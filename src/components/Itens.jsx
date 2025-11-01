@@ -3,11 +3,11 @@ import { useState, useEffect } from 'react';
 import Footer from './Footer';
 import { ShoppingCart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { db } from '../context/FirebaseConfig';
-import { collection, getDocs, query, where, orderBy } from 'firebase/firestore';
 import formatarPreco from '../utils/formatarPreco';
+import { ItensRepository } from '../repositories/ItensRepository';
+import { CategoriasRepository } from '../repositories/CategoriasRepository';
 
-function Cardapio() {
+function Itens() {
   const navigate = useNavigate(); 
   const [tabAtiva, setTabAtiva] = useState('500g');
   const [cardapio, setCardapio] = useState();
@@ -24,13 +24,9 @@ function Cardapio() {
     const fetchData = async () => {
       setLoadingCardapio(true);
       try {
-        const q = query(
-          collection(db, "cardapio"),
-          where("categoria", "==", tabAtiva)
-        );
-        const querySnapshot = await getDocs(q);
-        const itens = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        setCardapio(itens);
+        let itens = await ItensRepository.getItensByCategoria(tabAtiva);
+
+        setCardapio(itens); 
       } catch (error) {
         alert("Erro ao buscar itens do cardápio:", error);
       }
@@ -42,17 +38,15 @@ function Cardapio() {
   useEffect(() => {
     const fetchData = async () => {
       setLoadingCategorias(true);
+
       try {
-        const q = query(
-          collection(db, "categorias"),
-          orderBy("nome", "asc")
-        );
-        const querySnapshot = await getDocs(q);
-        const itens = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        let itens = await CategoriasRepository.getCategorias();
+
         setCategorias(itens);
       } catch (error) {
         alert("Erro ao buscar categorias:", error);
       }
+
       setLoadingCategorias(false);
     };
     fetchData();
@@ -163,4 +157,4 @@ function Cardapio() {
   );
 }
 
-export default Cardapio;
+export default Itens;

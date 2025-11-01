@@ -1,10 +1,9 @@
 import { CheckIcon, TrashIcon } from "lucide-react";
-import { db } from "../context/FirebaseConfig";
-import { collection, getDocs, query, orderBy, deleteDoc, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Navbar from "./Navbar";
 import DialogoDeletar from "./DialogoDeletar";
+import { CategoriasRepository } from '../repositories/CategoriasRepository';
 
 function Categorias() {
     const navigate = useNavigate();
@@ -20,7 +19,7 @@ function Categorias() {
 
     const confirmarDeletar = async () => {
         try {
-            await deleteDoc(doc(db, "categorias", categoriaSelecionada));
+            await CategoriasRepository.delete(categoriaSelecionada)
         } catch (error) {
             console.error("Erro ao deletar categoria:", error);
         }
@@ -42,15 +41,9 @@ function Categorias() {
     const fetchCategorias = async () => {
         setLoading(true);
         try {
-            const q = query(
-                collection(db, "categorias"),
-                orderBy("nome", "asc")
-            );
+            const categorias = await CategoriasRepository.getCategorias();
 
-            const querySnapshot = await getDocs(q);
-            const itens = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-            setCategorias(itens);
-            
+            setCategorias(categorias);
         } catch (error) {
             console.error("Erro ao buscar categorias:", error);
         }

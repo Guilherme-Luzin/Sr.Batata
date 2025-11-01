@@ -15,7 +15,7 @@ function Hero() {
           </h1>
         <p className="text-lg mb-6 text-[#843E1B]">Sabor irresistível em cada porção. Acesse o cardápio e peça já a sua!</p>
         <Link
-          to="/cardapio"
+          to="/itens"
           className="inline-block bg-[#FFD873] text-brown-900 font-semibold px-6 py-3 rounded-xl shadow-md hover:bg-yellow-400 transition text-[#843E1B]"
         >
           Ver Cardápio

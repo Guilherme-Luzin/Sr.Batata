@@ -2,80 +2,79 @@ import { useState, useEffect } from "react";
 import Input from "./Input";
 import Navbar from "./Navbar";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import { CategoriasRepository } from '../repositories/CategoriasRepository';
+import { CategoriesRepository } from '../repositories/CategoriesRepository';
 
-export default function CadastroCategoria() {
-  const [nome, setNome] = useState("");
+export default function CategoryRegistration() {
+  const [name, setName] = useState("");
   const [loading, setLoading] = useState(true);
-  const [mensagem, setMensagem] = useState("");
+  const [message, setMessage] = useState("");
   const [searchParams] = useSearchParams();
-  const categoriaId = searchParams.get("id");
+  const categoryId = searchParams.get("id");
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(!categoriaId || categoriaId === 0 || categoriaId === "undefined")
+    if(!categoryId || categoryId === 0 || categoryId === "undefined")
     {
       setLoading(false);
       return;
     }
 
-    const fetchCategorias = async () => {
+    const fetchCategories = async () => {
       setLoading(true);
       try {
-        let categoria = await CategoriasRepository.getCategoriaById(categoriaId);
+        let category = await CategoriesRepository.getCategoryById(categoryId);
 
-        setNome(categoria.nome || "");
+        setName(category.name || "");
 
       } catch (error) {
-        console.error("Erro ao buscar categoria com id:", categoriaId, error);
+        console.error("Erro ao buscar categoria com id:", categoryId, error);
       }
       setLoading(false);
     };
-    fetchCategorias();
-  }, [categoriaId]);
+    fetchCategories();
+  }, [categoryId]);
 
-  const AtualizarCategoria = async () => {
-    if (!categoriaId)
+  const updateCategory = async () => {
+    if (!categoryId)
       return;
 
     try {
-      await CategoriasRepository.update(categoriaId, nome);
+      await CategoriesRepository.update(categoryId, name);
 
-      setMensagem("Categoria atualizada com sucesso!");
+      setMessage("Categoria atualizada com sucesso!");
     } catch (error) {
       alert("Erro ao atualizar categoria:", error);
     }    
   }
 
-  const CadastrarCategoria = async () => {
-    if (categoriaId)
+  const registerCategory = async () => {
+    if (categoryId)
       return;
 
     try {
-      await CategoriasRepository.create(nome);
+      await CategoriesRepository.create(name);
 
-      setMensagem("Categoria cadastrado com sucesso!");
+      setMessage("Categoria cadastrado com sucesso!");
     } catch (error) {
       alert("Erro ao cadastrar categoria:", error);
     }
   }
 
-  const aoClicarEmCadastrar = async (e) => {
+  const onRegisterClick = async (e) => {
     e.preventDefault();
-    if (!nome) {
-      setMensagem("Todos os campos são obrigatórios!");
+    if (!name) {
+      setMessage("Todos os campos são obrigatórios!");
       return;
     }
 
     try {
+      updateCategory();
+      registerCategory();
 
-      AtualizarCategoria();
-      CadastrarCategoria();
-      
-      navigate("/categorias");
+      navigate("/categories");
     } catch (error) {
       console.error("Erro ao cadastrar categoria:", error);
-      setMensagem("Erro ao cadastrar categoria!", error);
+      setMessage("Erro ao cadastrar categoria!", error);
     }
   };
 
@@ -84,16 +83,16 @@ export default function CadastroCategoria() {
 
   return (
     <section className="bg-[#FFEBCB] min-h-screen w-screen flex flex-col">
-        <Navbar voltarVisivel={true} />
+        <Navbar backVisible={true} />
         <div className="flex flex-col items-center p-8 justify-center min-h-screen w-screen">
         <h2 className="text-2xl font-bold mb-4 text-[#843E1B]">Cadastro de Categoria</h2>
-        {mensagem && <p className="mb-4 text-green-600">{mensagem}</p>}
-        <form onSubmit={aoClicarEmCadastrar} className="flex flex-col gap-3">
+        {message && <p className="mb-4 text-green-600">{message}</p>}
+        <form onSubmit={onRegisterClick} className="flex flex-col gap-3">
             <Input 
                 type="text"
                 placeholder="Nome da categoria"
-                value={nome}
-                onChange={(e) => setNome(e.target.value)}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
             />
             <button type="submit" className="bg-yellow-400 px-4 py-2 rounded mt-2 font-semibold text-[#843E1B]">
               Salvar

@@ -3,17 +3,17 @@ import Input from "./Input";
 import Navbar from "./Navbar";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { ItensRepository } from '../repositories/ItensRepository';
-import { CategoriasRepository } from '../repositories/CategoriasRepository';
+import { CategoriesRepository } from '../repositories/CategoriesRepository';
 
-export default function CadastroItens() {
-  const [nome, setNome] = useState("");
-  const [descricao, setDescricao] = useState("");
-  const [preco, setPreco] = useState("");
-  const [categoria, setCategoria] = useState("");
-  const [peso, setPeso] = useState("");
-  const [categorias, setCategorias] = useState([]);
+export default function ItensRegistration() {
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [value, setValue] = useState("");
+  const [category, setCategory] = useState("");
+  const [weight, setWeight] = useState("");
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [mensagem, setMensagem] = useState("");
+  const [message, setMessage] = useState("");
   const [searchParams] = useSearchParams();
   const itemId = searchParams.get("id");
   const navigate = useNavigate();
@@ -30,11 +30,11 @@ export default function CadastroItens() {
       try{
         let item = await ItensRepository.getItemById(itemId);
 
-        setNome(item.nome || "");
-        setDescricao(item.descricao || "");
-        setPreco(item.preco || "");
-        setCategoria(item.categoria || "");
-        setPeso(item.peso || "");
+        setName(item.name || "");
+        setDescription(item.description || "");
+        setValue(item.value || "");
+        setCategory(item.category || "");
+        setWeight(item.weight || "");
         
       } catch (error) {
         console.error("Erro ao buscar item com id:", itemId, error);
@@ -45,83 +45,82 @@ export default function CadastroItens() {
   }, [itemId]);
 
   useEffect(() => {
-    const fetchCategorias = async () => {
+    const fetchCategories = async () => {
       setLoading(true);
       try {     
-        const categorias = await CategoriasRepository.getCategorias();
+        const categories = await CategoriesRepository.getCategories();
 
-        setCategorias(categorias);
+        setCategories(categories);
 
-        if(categorias.length > 0 && !itemId) 
-          setCategoria(categorias[0].nome);
+        if(categories.length > 0 && !itemId) 
+          setCategory(categories[0].name);
 
       } catch (error) {
         alert("Erro ao buscar categorias:", error);
       }
       setLoading(false);
     };
-    fetchCategorias();
+    fetchCategories();
   }, []);
 
-  const AtualizarItem = async () => {
+  const updateItem = async () => {
     if (!itemId)
       return;
 
     try {
       let item = {
         id: itemId,
-        nome,
-        descricao,
-        preco: parseFloat(preco),
-        categoria,
-        peso
+        name: name,
+        description: description,
+        value: parseFloat(value),
+        category: category,
+        weight: weight
       }
 
       await ItensRepository.update(item);
     
-      setMensagem("Item atualizado com sucesso!");
+      setMessage("Item atualizado com sucesso!");
     } catch (error) {
       alert("Erro ao atualizar item:", error);
     }
   }
 
-  const CadastrarItem = async () => {
+  const registerItem = async () => {
     if (itemId)
       return;
 
     try {
       let item = {
         id: itemId,
-        nome,
-        descricao,
-        preco: parseFloat(preco),
-        categoria,
-        peso
+        name: name,
+        description: description,
+        value: parseFloat(value),
+        category: category,
+        weight: weight
       }
 
       await ItensRepository.create(item);
 
-      setMensagem("Item cadastrado com sucesso!");
+      setMessage("Item cadastrado com sucesso!");
     } catch (error) {
       alert("Erro ao cadastrar item:", error);
     }
   }
 
-  const aoClicarEmCadastrar = async (e) => {
+  const onRegisterClick = async (e) => {
     e.preventDefault();
-    if (!nome || !descricao || !preco || !categoria) {
-      setMensagem("Todos os campos são obrigatórios!");
+    if (!name || !description || !value || !category) {
+      setMessage("Todos os campos são obrigatórios!");
       return;
     }
 
     try {
-
-      AtualizarItem();
-      CadastrarItem();
+      updateItem();
+      registerItem();
       
       navigate("/itens-admin");
     } catch (error) {
-      setMensagem("Erro ao cadastrar item!", error);
+      setMessage("Erro ao cadastrar item!", error);
     }
   };
 
@@ -130,42 +129,42 @@ export default function CadastroItens() {
 
   return (
     <section className="bg-[#FFEBCB] min-h-screen w-screen flex flex-col">
-        <Navbar voltarVisivel={true} />
+        <Navbar backVisible={true} />
         <div className="flex flex-col items-center p-8 justify-center min-h-screen w-screen">
         <h2 className="text-2xl font-bold mb-4 text-[#843E1B]">Cadastro de Item</h2>
-        {mensagem && <p className="mb-4 text-green-600">{mensagem}</p>}
-        <form onSubmit={aoClicarEmCadastrar} className="flex flex-col gap-3">
+        {message && <p className="mb-4 text-green-600">{message}</p>}
+        <form onSubmit={onRegisterClick} className="flex flex-col gap-3">
             <Input 
                 type="text"
                 placeholder="Nome do item"
-                value={nome}
-                onChange={(e) => setNome(e.target.value)}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
             />
             <textarea 
                 className="p-2 border rounded text-[#843E1B] min-w-[270px]"
                 placeholder="Descrição"
-                value={descricao}
-                onChange={(e) => setDescricao(e.target.value)}
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
             />
             <Input 
                 type="number"
                 placeholder="Preço"
-                value={preco}
-                onChange={(e) => setPreco(e.target.value)}
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
             />
             <Input 
                 type="text"
                 placeholder="Peso"
-                value={peso}
-                onChange={(e) => setPeso(e.target.value)}
+                value={weight}
+                onChange={(e) => setWeight(e.target.value)}
             />
             <select
-                value={categoria}
-                onChange={(e) => setCategoria(e.target.value)}
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
                 className="p-2 border rounded text-[#843E1B] min-w-[270px]"
             >
-            {categorias.map(cat => (
-                <option key={cat.id} value={cat.nome}>{cat.nome}</option>
+            {categories.map(cat => (
+                <option key={cat.id} value={cat.name}>{cat.name}</option>
             ))}
             </select>
             <button type="submit" className="bg-yellow-400 px-4 py-2 rounded mt-2 font-semibold text-[#843E1B]">

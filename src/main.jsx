@@ -4,15 +4,15 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import './index.css'
 import App from './App.jsx'
 import Itens from './components/Itens.jsx'
-import Contato from './components/Contato.jsx'
-import Carrinho from './components/Carrinho.jsx'
+import Contact from './components/Contact.jsx'
+import Cart from './components/Cart.jsx'
 import Login from './adminComponents/Login.jsx'
 import { AuthProvider } from './context/AuthContext'
-import CadastroItens from './adminComponents/CadastroItens.jsx'
-import CadastroCategoria from './adminComponents/CadastroCategoria.jsx'
+import ItensRegistration from './adminComponents/ItensRegistration.jsx'
+import CategoryRegistration from './adminComponents/CategoryRegistration.jsx'
 import AppAdmin from './adminComponents/AppAdmin.jsx'
 import ItensAdmin from './adminComponents/ItensAdmin.jsx'
-import Categorias from './adminComponents/Categorias.jsx'
+import CategoriesAdmin from './adminComponents/CategoriesAdmin.jsx'
 import ProtectedRoute from './adminComponents/ProtectedRoute.jsx'
 
 const router = createBrowserRouter([
@@ -25,12 +25,12 @@ const router = createBrowserRouter([
     element: <Itens />,
   },
   {
-    path: "/contato",
-    element: <Contato />,
+    path: "/contact",
+    element: <Contact />,
   },
   {
-    path: "/carrinho",
-    element: <Carrinho />,
+    path: "/cart",
+    element: <Cart />,
   },
   {
     path: "/login",
@@ -45,16 +45,16 @@ const router = createBrowserRouter([
     element: <ProtectedRoute> <ItensAdmin /> </ProtectedRoute>,
   },
   {
-    path: "/categorias",
-    element: <ProtectedRoute> <Categorias /> </ProtectedRoute>,
+    path: "/categories",
+    element: <ProtectedRoute> <CategoriesAdmin /> </ProtectedRoute>,
   },
   {
-    path: "/cadastro-itens",
-    element: <ProtectedRoute> <CadastroItens /> </ProtectedRoute>,
+    path: "/itens-registration",
+    element: <ProtectedRoute> <ItensRegistration /> </ProtectedRoute>,
   },
   {
-    path: "/cadastro-categoria",
-    element: <ProtectedRoute> <CadastroCategoria /> </ProtectedRoute>,
+    path: "/category-registration",
+    element: <ProtectedRoute> <CategoryRegistration /> </ProtectedRoute>,
   },
 ]);
 

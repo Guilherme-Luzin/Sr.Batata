@@ -1,49 +1,49 @@
-import { CheckIcon, TrashIcon } from "lucide-react";
+import { TrashIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Navbar from "./Navbar";
-import DialogoDeletar from "./DialogoDeletar";
-import { CategoriasRepository } from '../repositories/CategoriasRepository';
+import DeleteDialog from "./DeleteDialog";
+import { CategoriesRepository } from '../repositories/CategoriesRepository';
 
-function Categorias() {
+function CategoriesAdmin() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
-    const [categorias, setCategorias] = useState([]);
-    const [modalAberto, setModalAberto] = useState(false);
-    const [categoriaSelecionada, setCategoriaSelecionada] = useState(null);
+    const [categories, setCategories] = useState([]);
+    const [openModal, setOpenModal] = useState(false);
+    const [selectedCategory, setSelectedCategory] = useState(null);
 
-    const abrirModalDeletar = (categoriaId) => {
-        setCategoriaSelecionada(categoriaId);
-        setModalAberto(true);
+    const openDeleteModal = (categoryId) => {
+        setSelectedCategory(categoryId);
+        setOpenModal(true);
     };
 
-    const confirmarDeletar = async () => {
+    const ConfirmDelete = async () => {
         try {
-            await CategoriasRepository.delete(categoriaSelecionada)
+            await CategoriesRepository.delete(selectedCategory)
         } catch (error) {
             console.error("Erro ao deletar categoria:", error);
         }
-        setModalAberto(false);
-        setCategoriaSelecionada(null);
-        fetchCategorias();
+        setOpenModal(false);
+        setSelectedCategory(null);
+        fetchCategories();
     };
 
-    function aoClicarNaCategoria(categoriaId) {
+    function onCategoryClick(categoryId) {
         const query = new URLSearchParams();
-        query.set("id", categoriaId);
-        navigate(`/cadastro-categoria?${query.toString()}`);
+        query.set("id", categoryId);
+        navigate(`/category-registration?${query.toString()}`);
     }
 
     useEffect(() => {
-        fetchCategorias();
+        fetchCategories();
     }, []);
 
-    const fetchCategorias = async () => {
+    const fetchCategories = async () => {
         setLoading(true);
         try {
-            const categorias = await CategoriasRepository.getCategorias();
+            const categories = await CategoriesRepository.getCategories();
 
-            setCategorias(categorias);
+            setCategories(categories);
         } catch (error) {
             console.error("Erro ao buscar categorias:", error);
         }
@@ -56,13 +56,13 @@ function Categorias() {
 
     return (
         <section className="bg-[#FFEBCB] min-h-screen w-screen flex flex-col">
-            <Navbar voltarVisivel={true} />
+            <Navbar backVisible={true} />
 
             <div className="flex flex-col items-center mt-2">
                 <div className="flex justify-center">
                     <button 
                         className="bg-[#843E1B] text-[#FFEBCB] rounded-md px-4 py-2"
-                        onClick={() => navigate("/cadastro-categoria")}
+                        onClick={() => navigate("/category-registration")}
                     >
                         Cadastrar nova categoria
                     </button>
@@ -70,17 +70,17 @@ function Categorias() {
             </div>
             <div className="flex justify-center">
                 <ul className="space-y-4 p-6 bg-[#FFEBCB] rounded-md shadow-2xl w-full md:w-[600px]">
-                {categorias.map((categoria) => (
-                    <li key={categoria.id} className="flex gap-2">
+                {categories.map((category) => (
+                    <li key={category.id} className="flex gap-2">
                     <button
-                        onClick={() => aoClicarNaCategoria(categoria.id)}
+                        onClick={() => onCategoryClick(category.id)}
                         className="bg-[#FFD873] text-[#843E1B] p-2 w-100 rounded-md flex items-center gap-2 text-left"
                     >
-                        {categoria.nome}
+                        {category.name}
                     </button>
                     <button 
                         className="bg-[#FFD873] text-[#843E1B] p-2 rounded-md flex items-center gap-2 text-left"
-                        onClick={() => abrirModalDeletar(categoria.id)}
+                        onClick={() => openDeleteModal(category.id)}
                     >
                         <TrashIcon />
                     </button>
@@ -89,14 +89,14 @@ function Categorias() {
                 </ul>
             </div>
 
-            {modalAberto && (
-                <DialogoDeletar
-                    fecharModal={() => setModalAberto(false)}
-                    aoConfirmar={confirmarDeletar} />
+            {openModal && (
+                <DeleteDialog
+                    closeModal={() => setOpenModal(false)}
+                    onConfirm={ConfirmDelete} />
             )}
         </section>
     )
 }
 
-export default Categorias
+export default CategoriesAdmin
 

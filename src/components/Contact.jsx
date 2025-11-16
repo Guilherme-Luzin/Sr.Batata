@@ -1,10 +1,10 @@
 import Navbar from './Navbar';
 import Footer from './Footer';
 
-function Contato() {
+function Contact() {
   return (
     <section className="h-screen w-screen bg-[#FFEBCB]">
-        <Navbar voltarVisivel={true}/>
+        <Navbar backVisible={true}/>
       <div className="text-center">
         <h2 className="text-3xl font-bold mb-4 text-[#843E1B]">Fale com a gente!</h2>
         <p className="mb-4 text-[#843E1B]">📍 Rua Teu Teu, Qd. 39, Lt. 24 - Aparecida de Goiânia - GO</p>
@@ -16,4 +16,4 @@ function Contato() {
   );
 }
 
-export default Contato;
+export default Contact;

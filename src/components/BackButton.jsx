@@ -1,7 +1,7 @@
 import { ChevronLeftIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-function BotaoDeVoltar({visible}) {
+function BackButton({visible}) {
     const navigate = useNavigate();
     
     if (!visible)
@@ -16,4 +16,4 @@ function BotaoDeVoltar({visible}) {
     );
 }
 
-export default BotaoDeVoltar;
+export default BackButton;

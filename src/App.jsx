@@ -1,16 +1,15 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import './App.css';
-import Hero from './components/Hero';
+import Home from './components/Home';
 
 function App() {
   return (
     <div className="bg-[#FFEBCB] text-brown-800 font-sans h-screen w-screen flex flex-col">
       <div className="space-y-4">
-        <Navbar voltarVisivel={false}/>
+        <Navbar backVisible={false}/>
       <div className="flex-grow">
-        <Hero />
+        <Home />
       </div>
       </div>
       <Footer />

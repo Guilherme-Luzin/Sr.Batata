@@ -2,36 +2,36 @@ import { CheckIcon, TrashIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Navbar from "./Navbar";
-import DialogoDeletar from "./DialogoDeletar";
+import DeleteDialog from "./DeleteDialog";
 import { ItensRepository } from '../repositories/ItensRepository';
 
 function ItensAdmin() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(true);
     const [itens, setItens] = useState([]);
-    const [modalAberto, setModalAberto] = useState(false);
-    const [itemSelecionado, setItemSelecionado] = useState(null);
+    const [openModal, setOpenModal] = useState(false);
+    const [selectedIten, setSelectedIten] = useState(null);
 
-    const abrirModalDeletar = (itemId) => {
-        setItemSelecionado(itemId);
-        setModalAberto(true);
+    const openDeleteModal = (itemId) => {
+        setSelectedIten(itemId);
+        setOpenModal(true);
     };
 
-    const confirmarDeletar = async () => {
+    const ConfirmDelete = async () => {
         try {
-            await ItensRepository.delete(itemSelecionado)
+            await ItensRepository.delete(selectedIten)
         } catch (error) {
             console.error("Erro ao deletar item:", error);
         }
-        setModalAberto(false);
-        setItemSelecionado(null);
+        setOpenModal(false);
+        setSelectedIten(null);
         fetchItens();
     };
 
-    function aoClicarNoitem(itemId) {
+    function onItenClick(itemId) {
         const query = new URLSearchParams();
         query.set("id", itemId);
-        navigate(`/cadastro-itens?${query.toString()}`);
+        navigate(`/itens-registration?${query.toString()}`);
     }
 
     useEffect(() => {
@@ -56,13 +56,13 @@ function ItensAdmin() {
 
     return (
         <section className="bg-[#FFEBCB] min-h-screen w-screen flex flex-col">
-            <Navbar voltarVisivel={true} />
+            <Navbar backVisible={true} />
 
             <div className="flex flex-col items-center mt-2">
                 <div className="flex justify-center">
                     <button 
                         className="bg-[#843E1B] text-[#FFEBCB] rounded-md px-4 py-2"
-                        onClick={() => navigate("/cadastro-itens")}
+                        onClick={() => navigate("/itens-registration")}
                     >
                         Cadastrar novo item
                     </button>
@@ -73,14 +73,14 @@ function ItensAdmin() {
                 {itens.map((item) => (
                     <li key={item.id} className="flex gap-2">
                     <button
-                        onClick={() => aoClicarNoitem(item.id)}
+                        onClick={() => onItenClick(item.id)}
                         className="bg-[#FFD873] text-[#843E1B] p-2 w-100 rounded-md flex items-center gap-2 text-left"
                     >
-                        {item.nome} - {item.categoria}
+                        {item.name} - {item.category}
                     </button>
                     <button 
                         className="bg-[#FFD873] text-[#843E1B] p-2 rounded-md flex items-center gap-2 text-left"
-                        onClick={() => abrirModalDeletar(item.id)}
+                        onClick={() => openDeleteModal(item.id)}
                     >
                         <TrashIcon />
                     </button>
@@ -89,10 +89,10 @@ function ItensAdmin() {
                 </ul>
             </div>
 
-            {modalAberto && (
-                <DialogoDeletar
-                    fecharModal={() => setModalAberto(false)}
-                    aoConfirmar={confirmarDeletar} />
+            {openModal && (
+                <DeleteDialog
+                    closeModal={() => setOpenModal(false)}
+                    onConfirm={ConfirmDelete} />
             )}
         </section>
     )

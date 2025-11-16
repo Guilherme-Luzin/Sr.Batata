@@ -6,19 +6,19 @@ import Input from "./Input";
 export default function Login() {
   const { login, loading } = useAuth();
   const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
-  const [erro, setErro] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate(); 
 
-  const aoClicarEmEntrar = async (e) => {
+  const onLoginClick = async (e) => {
     e.preventDefault();
     setSubmitting(true);
     try {
-      await login(email, senha);
+      await login(email, password);
       navigate('/app-admin')
     } catch (err) {
-      setErro("Credenciais inválidas");
+      setError("Credenciais inválidas");
     } finally {
       setSubmitting(false);
     }
@@ -33,7 +33,7 @@ export default function Login() {
       <h1 className="text-xl font-bold mb-4 text-[#843E1B]">
         Login
     </h1>
-      <form onSubmit={aoClicarEmEntrar} className="flex flex-col gap-2">
+      <form onSubmit={onLoginClick} className="flex flex-col gap-2">
         <Input 
           type="email"
           placeholder="Email"
@@ -45,11 +45,11 @@ export default function Login() {
           className="p-2 border rounded text-[#843E1B]"
           type="password"
           placeholder="Senha"
-          value={senha}
-          onChange={(e) => setSenha(e.target.value)}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           disabled={submitting}
         />
-        {erro && <p className="text-red-500">{erro}</p>}
+        {error && <p className="text-red-500">{error}</p>}
         <button type="submit" className="bg-yellow-400 px-4 py-2 rounded mt-2 text-[#843E1B]">
           {submitting ? "Entrando..." : "Entrar"}
         </button>

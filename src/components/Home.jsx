@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
-function Inicio() {
+function Home() {
   return (
     <section className="bg-[#FFEBCB] py-16 px-6 text-center overflow-hidden">
       <motion.div
@@ -13,22 +13,16 @@ function Inicio() {
           Batatas gourmet recheadas 
           <img src='/imgs/Sra.BatataNoCarrinho.png' className="w-24 h-auto inline-block ml-2" alt="Sra. Batata"></img>
           </h1>
-        <p className="text-lg mb-6 text-[#843E1B]">Bem-vindo, aqui você poderá ver e cadastrar novos itens e categorias!</p>
+        <p className="text-lg mb-6 text-[#843E1B]">Sabor irresistível em cada porção. Acesse o cardápio e peça já a sua!</p>
         <Link
-          to="/itens-admin"
-          className="inline-block mr-2 bg-[#FFD873] text-brown-900 font-semibold px-6 py-3 rounded-xl shadow-md hover:bg-yellow-400 transition text-[#843E1B]"
-        >
-          Itens
-        </Link>
-        <Link
-          to="/categorias"
+          to="/itens"
           className="inline-block bg-[#FFD873] text-brown-900 font-semibold px-6 py-3 rounded-xl shadow-md hover:bg-yellow-400 transition text-[#843E1B]"
         >
-          Categorias
+          Ver Cardápio
         </Link>
       </motion.div>
     </section>
   );
 }
 
-export default Inicio;
+export default Home;

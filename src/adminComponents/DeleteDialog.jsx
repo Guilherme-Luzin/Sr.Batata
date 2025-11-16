@@ -1,7 +1,7 @@
-function DialogoDeletar({ fecharModal, aoConfirmar }) {
+function DeleteDialog({ closeModal, onConfirm }) {
     const handleConfirm = () => {
-        aoConfirmar();
-        fecharModal();
+        onConfirm();
+        closeModal();
     };
 
     return (
@@ -18,7 +18,7 @@ function DialogoDeletar({ fecharModal, aoConfirmar }) {
                     </button>
                     <button 
                         className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md"
-                        onClick={fecharModal}
+                        onClick={closeModal}
                     >
                         Cancelar
                     </button>
@@ -28,4 +28,4 @@ function DialogoDeletar({ fecharModal, aoConfirmar }) {
     );
 }
 
-export default DialogoDeletar;
+export default DeleteDialog;

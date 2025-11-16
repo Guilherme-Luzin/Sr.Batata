@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom';
-import BotaoDeVoltar from './BotaoDeVoltar';
+import BackButton from './BackButton';
 import { ShoppingCart } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-function Navbar({voltarVisivel}) {
+function Navbar({backVisible}) {
   const navigate = useNavigate(); 
 
   return (
     <header className="bg-[#FFD873] text-brown-900 shadow-md flex w-screen">
-      <BotaoDeVoltar visible={voltarVisivel} />
+      <BackButton visible={backVisible} />
       <div className="flex items-center">
         <img src='/imgs/Sra.BatataNoCarrinho.png'
             className="w-10 h-auto inline-block ml-2 hover:cursor-pointer"
@@ -18,9 +18,9 @@ function Navbar({voltarVisivel}) {
           <h3 className='text-[#843E1B]'> | </h3>
           <Link to="/itens" className="gap-2 items-center">Cardápio</Link>
           <h3 className='text-[#843E1B]'> | </h3>
-          <Link to="/contato" className="gap-2 items-center">Contato</Link>
+          <Link to="/contact" className="gap-2 items-center">Contato</Link>
           <h3 className='text-[#843E1B]'> | </h3>
-          <Link to="/carrinho" className='gap-2 items-center' title='Carrinho'>
+          <Link to="/cart" className='gap-2 items-center' title='Carrinho'>
             <ShoppingCart />
           </Link>
         </nav>

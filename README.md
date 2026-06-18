@@ -1,6 +1,6 @@
-# Srs. Batata - Digital Menu Web Application
+# Sra. Batata - Digital Menu Web Application
 
-Srs. Batata is a high-performance digital menu web application built with React, specifically tailored for a fast-casual restaurant chain specializing in stuffed baked potatoes. Designed with a mobile-first approach, the application delivers an intuitive e-commerce experience that allows customers to browse dynamic menus, customize ingredients, and seamlessly manage their orders. The architecture emphasizes modern front-end engineering practices, ensuring reusable component structures, responsive UI design, and optimized state management for high-traffic food delivery or table-ordering environments.
+Sra. Batata is a high-performance digital menu web application built with React, specifically tailored for a fast-casual restaurant chain specializing in stuffed baked potatoes. Designed with a mobile-first approach, the application delivers an intuitive e-commerce experience that allows customers to browse dynamic menus, customize ingredients, and seamlessly manage their orders. The architecture emphasizes modern front-end engineering practices, ensuring reusable component structures, responsive UI design, and optimized state management for high-traffic food delivery or table-ordering environments.
 
 ## 🚀 Features
 
